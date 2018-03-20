@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class UnitState {
 
-    public readonly UnitStateTemplate template;
-
-    public float speed { get; private set; }
+    public UnitStateTemplate template { get; private set; }
+    public List<WeaponState> weapons;
 
 
     public UnitState(UnitStateTemplate template) {
@@ -18,20 +17,13 @@ public class UnitState {
         return template.parametersTemplate.defaultMovementSettings;
     }
 
-    public void accelerateToMaximumSpeed(float deltaTime) {
-        float maxSpeed = currentMovementSettings().maxSpeed;
-        if (speed < maxSpeed) {
-            speed += currentMovementSettings().maxAcceleration;
-            if (speed > maxSpeed) {
-                speed = maxSpeed;
-            }
+    public WeaponState DefaultWeapon() {
+        if (weapons != null && weapons.Count > 0) {
+            return weapons[0];
+        } else {
+            return null;
         }
     }
-
-    public void stop() {
-        speed = 0;
-    }
-
 
 }
 

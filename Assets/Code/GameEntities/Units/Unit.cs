@@ -1,10 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit : MonoBehaviour {
+public partial class Unit : MonoBehaviour {
 
-    private Vector3 nextMovementTarget;
     public Rigidbody rb;
 
     public UnitTemplate template;
@@ -20,41 +20,35 @@ public class Unit : MonoBehaviour {
     }
 
     //External interactions
-    public void SetTarget(Vector3 target) {
+    public void SetMovementTarget(Vector3 target) {
         this.nextMovementTarget = target;
+    }
+
+    public void SetAttackTarget(Vector3 target) {
+        if (attackTargetPosition != null && target != null &&
+            Vector3.Distance(attackTargetPosition, target) > 0.5) {
+            currentState.DefaultWeapon().StartTargeting();
+        }
+
+        this.attackTargetPosition = target;
+        this.UpdateWeaponTargetAngles();
+    }
+
+    public void SetAttackTarget(GameObject target) {
+        if (attackTargetUnit != target) { //reset targetting counter
+            currentState.DefaultWeapon().StartTargeting();
+        }
+
+        this.attackTargetUnit = target;
+        this.UpdateWeaponTargetAngles();
     }
 
 	
     //Internal mechanics
 	// Update is called once per frame
 	void Update () {
-
-        //Arrange unit heading towards the next target point if it exists
-        if (nextMovementTarget != transform.position) {
-            Vector3 targetDirection = (nextMovementTarget - transform.position).normalized;
-            float angle = Vector3.Angle(targetDirection, transform.forward);
-
-            if (angle > 1) {
-                Vector3 nextForward = Vector3.RotateTowards(transform.forward, targetDirection, currentState.currentMovementSettings().maxAngularSpeed * Time.deltaTime, 0);
-                transform.forward = nextForward;
-            } else { //rotation is acceptable for moving
-                transform.forward = targetDirection; //keep orientation
-                currentState.accelerateToMaximumSpeed(Time.deltaTime);
-            } 
-
-            if (currentState.speed > 0) { 
-
-                Vector3 movement = Vector3.forward * currentState.speed * Time.deltaTime;
-
-                if (movement.sqrMagnitude < (transform.position - nextMovementTarget).sqrMagnitude) {
-                    transform.Translate(movement);
-                } else {
-                    transform.position = nextMovementTarget; //eliminating jitter around target
-                    currentState.stop();
-                }
-            }
-
-        }
+        PerformMovementJob();
+        PerformAttackJob();   
     }
 
 }

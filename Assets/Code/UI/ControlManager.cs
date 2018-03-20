@@ -19,7 +19,7 @@ public class ControlManager : MonoBehaviour {
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo)) {
                 if (hitInfo.transform.gameObject.name.Equals("Ground") && selectedUnit != null) {
-                    selectedUnit.GetComponent<Unit>().SetTarget(hitInfo.point);
+                    selectedUnit.GetComponent<Unit>().SetMovementTarget(hitInfo.point);
                 } else if (hitInfo.transform.gameObject.name.Contains("Unit")) {
                     selectedUnit = hitInfo.transform.gameObject;
                 }
