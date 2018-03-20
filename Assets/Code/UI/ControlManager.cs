@@ -33,6 +33,7 @@ public class ControlManager : MonoBehaviour {
                 if (selectedUnit) {
                     var unit = Instantiate(selectedUnit);
                     unit.transform.position = new Vector3(hitInfo.point.x, 2, hitInfo.point.z);
+                    unit.GetComponent<Unit>().template = UnitTemplateFactory.defaultUnitTemplate();
                     //unit.GetComponent<Unit>().movementPower = Random.Range(5, 50);
                     //unit.GetComponent<Unit>().SetTarget(hitInfo.point);
                    // unit.GetComponent<Rigidbody>().mass = Random.Range(0.1f, 10);

@@ -12,4 +12,13 @@ public class UnitParametersTemplate : Object {
         weapons = new List<UnitWeaponTemplate>();
     }
 
+    public UnitParametersTemplate(UnitMovementSettings defaultMovementSettings, List<UnitWeaponTemplate> weapons = null) {
+        this.defaultMovementSettings = defaultMovementSettings;
+        if (weapons != null) {
+            this.weapons = new List<UnitWeaponTemplate>(weapons);
+        } else {
+            this.weapons = new List<UnitWeaponTemplate>();
+        }
+    }
+
 }

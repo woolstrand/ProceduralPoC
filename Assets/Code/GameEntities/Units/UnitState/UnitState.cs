@@ -7,7 +7,16 @@ public class UnitState {
 
     public readonly UnitStateTemplate template;
 
-    public float speed;
+    public float speed { get; private set; }
+
+
+    public UnitState(UnitStateTemplate template) {
+        this.template = template;
+    }
+
+    public UnitMovementSettings currentMovementSettings() {
+        return template.parametersTemplate.defaultMovementSettings;
+    }
 
     public void accelerateToMaximumSpeed(float deltaTime) {
         float maxSpeed = currentMovementSettings().maxSpeed;
@@ -19,13 +28,10 @@ public class UnitState {
         }
     }
 
-    public UnitState(UnitStateTemplate template) {
-        this.template = template;
+    public void stop() {
+        speed = 0;
     }
 
-    public UnitMovementSettings currentMovementSettings() {
-        return template.parametersTemplate.defaultMovementSettings;
-    }
 
 }
 

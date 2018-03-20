@@ -7,13 +7,15 @@ public class Unit : MonoBehaviour {
     private Vector3 nextMovementTarget;
     public Rigidbody rb;
 
-    private UnitTemplate template;
-    private UnitState currentState;
+    public UnitTemplate template;
+    public UnitState currentState { get; private set; }
 
         // Use this for initialization
     void Start() {
         rb = this.GetComponent<Rigidbody>();
-        template = new UnitTemplate();
+        if (template == null) {
+            template = UnitTemplateFactory.defaultUnitTemplate();
+        }
         currentState = new UnitState(template.initialState);
     }
 
@@ -48,6 +50,7 @@ public class Unit : MonoBehaviour {
                     transform.Translate(movement);
                 } else {
                     transform.position = nextMovementTarget; //eliminating jitter around target
+                    currentState.stop();
                 }
             }
 

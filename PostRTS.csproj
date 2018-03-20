@@ -282,14 +282,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Code\GameEntities\Units\Factory\UnitFactory.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\Factory\UnitTemplateFactory.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\Unit.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\UnitState\UnitState.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\UnitTemplate\UnitMovementSettings.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\UnitTemplate\UnitParametersTemplate.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\UnitTemplate\UnitStateTemplate.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\UnitTemplate\UnitTemplate.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\UnitTemplate\UnitWeaponTemplate.cs" />
     <Compile Include="Assets\Code\UI\ControlManager.cs" />
-    <Compile Include="Assets\Code\Units\Unit.cs" />
-    <Compile Include="Assets\Code\Units\UnitState\UnitState.cs" />
-    <Compile Include="Assets\Code\Units\UnitTemplate\UnitMovementSettings.cs" />
-    <Compile Include="Assets\Code\Units\UnitTemplate\UnitParametersTemplate.cs" />
-    <Compile Include="Assets\Code\Units\UnitTemplate\UnitStateTemplate.cs" />
-    <Compile Include="Assets\Code\Units\UnitTemplate\UnitTemplate.cs" />
-    <Compile Include="Assets\Code\Units\UnitTemplate\UnitWeaponTemplate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
