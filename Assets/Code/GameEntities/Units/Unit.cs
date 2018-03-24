@@ -9,14 +9,20 @@ public partial class Unit : MonoBehaviour {
 
     public UnitTemplate template;
     public UnitState currentState { get; private set; }
+    public float health {get; private set; }
+
+    private List<Action> gizmoActions;
 
         // Use this for initialization
     void Start() {
         rb = this.GetComponent<Rigidbody>();
+        gizmoActions = new List<Action>();
+        
         if (template == null) {
             template = UnitTemplateFactory.defaultUnitTemplate();
         }
         currentState = new UnitState(template.initialState);
+        health = currentState.template.parametersTemplate.maximumHealth;
     }
 
     //External interactions
@@ -26,7 +32,7 @@ public partial class Unit : MonoBehaviour {
 
     public void SetAttackTarget(Vector3 target) {
         if (attackTargetPosition != null && target != null &&
-            Vector3.Distance(attackTargetPosition, target) > 0.5) {
+            Vector3.Distance((Vector3)attackTargetPosition, target) > 0.5) {
             currentState.DefaultWeapon().StartTargeting();
         }
 
@@ -48,7 +54,18 @@ public partial class Unit : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         PerformMovementJob();
-        PerformAttackJob();   
+        PerformAttackJob(); 
+        
+        if (this.health <= 0) {
+            GameObject.Destroy(this.gameObject);
+        }  
+    }
+
+    private void OnDrawGizmos() {
+        foreach (Action a in gizmoActions) {
+            a();
+        }
+        gizmoActions.Clear();
     }
 
 }

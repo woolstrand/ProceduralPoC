@@ -15,6 +15,13 @@ public class WeaponState {
     private float targetingStartedAt; //TODO: do something with float precision deterioration over time (what time span will actually cause problems?)
     private float reloadingStartedAt;
 
+
+    public WeaponState(UnitWeaponTemplate template) {
+        this.template = template;
+        targetHeading = heading = (template.minHeading + template.maxHeading) / 2;
+        targetPitch = pitch = (template.minPitch + template.maxPitch) / 2;
+    }
+
     public void StartTargeting() {
         targetingStartedAt = Time.time;
     }
@@ -37,21 +44,15 @@ public class WeaponState {
         }
     }
 
-    public bool ReadyToFireAtPosition(GameObject target) {
+    public bool ReadyToFire() {
         if (Math.Abs(pitch - targetPitch) < 0.1 && Math.Abs(heading - targetHeading) < 0.1 &&
-            Time.time - targetingStartedAt > template.targetingTime) return true;
+            Time.time - targetingStartedAt > template.targetingTime &&
+            Time.time - reloadingStartedAt > template.reloadTime) return true;
         else return false;
     }
 
-    //fire at specific game object. homing projectiles will track it.
-    public void fire(GameObject target) {
-        //if (template.)
-    }
-
-    //fire at specific point of game space.
-    public void fire(Vector3 target) {
-        if (Time.time - reloadingStartedAt > template.reloadTime) {
-            reloadingStartedAt = Time.time;
-        }
+    //reset fire counters, initiate reloading
+    public void Fire() {
+        reloadingStartedAt = Time.time;
     }
 }

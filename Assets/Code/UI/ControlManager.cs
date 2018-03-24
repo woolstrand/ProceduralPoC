@@ -32,12 +32,23 @@ public class ControlManager : MonoBehaviour {
             if (Physics.Raycast(ray, out hitInfo)) {
                 if (selectedUnit) {
                     var unit = Instantiate(selectedUnit);
-                    unit.transform.position = new Vector3(hitInfo.point.x, 2, hitInfo.point.z);
+                    unit.transform.position = new Vector3(hitInfo.point.x, 0.1f, hitInfo.point.z);
+                    unit.GetComponent<Unit>().SetMovementTarget(unit.transform.position);
                     unit.GetComponent<Unit>().template = UnitTemplateFactory.defaultUnitTemplate();
-                    //unit.GetComponent<Unit>().movementPower = Random.Range(5, 50);
-                    //unit.GetComponent<Unit>().SetTarget(hitInfo.point);
-                   // unit.GetComponent<Rigidbody>().mass = Random.Range(0.1f, 10);
-                   // unit.GetComponent<Rigidbody>().drag = Random.Range(0.01f, 5);
+                }
+            }
+        }
+
+        if (Input.GetButtonDown("Fire3")) {
+            if (selectedUnit == null) return;
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+            if (Physics.Raycast(ray, out hitInfo)) {
+                if (hitInfo.transform.gameObject.name.Equals("Ground")) {
+                    selectedUnit.GetComponent<Unit>().SetAttackTarget(hitInfo.point);
+                } else if (hitInfo.transform.gameObject.name.Contains("Unit")) {
+                    selectedUnit.GetComponent<Unit>().SetAttackTarget(hitInfo.transform.gameObject);
                 }
             }
         }

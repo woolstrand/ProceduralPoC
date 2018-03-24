@@ -11,6 +11,12 @@ public class UnitState {
 
     public UnitState(UnitStateTemplate template) {
         this.template = template;
+        weapons = new List<WeaponState>();
+
+        foreach (UnitWeaponTemplate weaponTemplate in this.template.parametersTemplate.weapons) {
+            WeaponState weaponState = new WeaponState(weaponTemplate);
+            weapons.Add(weaponState);
+        }
     }
 
     public UnitMovementSettings currentMovementSettings() {

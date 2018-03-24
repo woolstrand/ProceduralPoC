@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -282,7 +284,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Code\GameEntities\Effects\EffectFactory.cs" />
     <Compile Include="Assets\Code\GameEntities\Effects\Effect.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\UnitEffects.cs" />
     <Compile Include="Assets\Code\GameEntities\Units\Factory\UnitFactory.cs" />
     <Compile Include="Assets\Code\GameEntities\Units\Factory\UnitTemplateFactory.cs" />
     <Compile Include="Assets\Code\GameEntities\Units\Unit.cs" />
@@ -295,7 +299,7 @@
     <Compile Include="Assets\Code\GameEntities\Units\UnitTemplate\UnitTemplate.cs" />
     <Compile Include="Assets\Code\GameEntities\Units\UnitTemplate\UnitWeaponProjectileTemplate.cs" />
     <Compile Include="Assets\Code\GameEntities\Units\UnitTemplate\UnitWeaponTemplate.cs" />
-    <Compile Include="Assets\Code\GameEntities\Units\UnitWeaponary.cs" />
+    <Compile Include="Assets\Code\GameEntities\Units\UnitWeaponry.cs" />
     <Compile Include="Assets\Code\UI\ControlManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
