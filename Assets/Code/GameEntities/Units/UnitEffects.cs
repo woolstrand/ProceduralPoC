@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine;
 
 public partial class Unit {
 
@@ -19,6 +20,8 @@ public partial class Unit {
             }
 
             prop.SetValue(this, value, null);
+
+            Debug.Log("Applied effect on \"" + e.keyPath + "\" field of object " + this.name + ". new value: " + value);
         }
     }
 } 

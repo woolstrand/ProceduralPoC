@@ -18,9 +18,20 @@ public partial class Unit {
         }
 
         Vector3 objectToTarget = (targetPosition - transform.position).normalized;
+
+        Vector3 targetProjection = Vector3.ProjectOnPlane(objectToTarget, transform.up);
+        Vector3 forwardProjection = Vector3.ProjectOnPlane(transform.forward, transform.up);
+
+        float targetHeading = Vector3.Angle(forwardProjection, targetProjection) * Mathf.Deg2Rad;
+
         float targetPitch = Mathf.Asin(objectToTarget.y);
-        float targetHeading = Mathf.Atan2(objectToTarget.z, objectToTarget.x);
-        targetHeading = targetHeading - transform.rotation.eulerAngles.y;
+//        float targetHeading = Mathf.Atan2(objectToTarget.x, objectToTarget.z);
+        //targetHeading = targetHeading - (-transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
+
+        if (targetHeading > Mathf.PI) targetHeading -= Mathf.PI;
+        if (targetHeading < -Mathf.PI) targetHeading += Mathf.PI;
+
+        currentState.DefaultWeapon().UpdateTargetAngles(targetHeading, targetPitch);
     }
 
     private void PerformAttackJob() {
@@ -32,6 +43,7 @@ public partial class Unit {
 
         if (weapon != null) {
 
+            //selecting target position depending on what is set as target
             Vector3 targetPosition;
             if (attackTargetUnit != null) {
                 targetPosition = attackTargetUnit.transform.position;
@@ -39,23 +51,27 @@ public partial class Unit {
                 targetPosition = (Vector3)attackTargetPosition;
             }
 
+            //Aim before shooting. Aiming speed should be enough to follow a moving target.
+            weapon.PerformTargeting(Time.deltaTime);
+
             if (weapon.ReadyToFire()) {
+                Debug.Log(this.gameObject.name + " ready to fire");
                 switch (weapon.template.projectile.projectileType) {
                     case ProjectileType.Direct:
                         if (attackTargetUnit != null) {
                             FireDirectProjectileAtTarget(weapon.template.projectile, attackTargetUnit);
 
                             weapon.Fire(); //this object is a data object, so it doesn't fire by itself, it only moves inner state from "ready" to "reloading"
-                            PerformFiringVisualsForWeapon(weapon);
                         }
                         break;
                     case ProjectileType.Linear:
                         if (Math.Pow(weapon.template.projectile.effectiveLength, 2) >
                             Vector3.SqrMagnitude(targetPosition - transform.position)) {
+                            Debug.Log(this.gameObject.name + " in range, firing");
 
-                            FireLinearProjectileAtTarget(weapon.template.projectile, targetPosition);
+                            FireLinearProjectileAtTarget(weapon, targetPosition);
                             weapon.Fire(); //this object is a data object, so it doesn't fire by itself, it only moves inner state from "ready" to "reloading"
-                            PerformFiringVisualsForWeapon(weapon);
+                            
                         }
                         break;
                     case ProjectileType.SubUnit:
@@ -63,9 +79,6 @@ public partial class Unit {
                     default:
                         break;
                 }
-            } else if (Vector3.SqrMagnitude(transform.position - targetPosition) < Math.Pow(weapon.template.effectiveRange, 2)) {
-                //aiming only within effective range    
-                weapon.PerformTargeting(Time.deltaTime);
             }
         }
     }
@@ -76,24 +89,28 @@ public partial class Unit {
         }
     }
 
-    private void FireLinearProjectileAtTarget(UnitWeaponProjectileTemplate projectile, Vector3 target) {
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, target - transform.position, projectile.effectiveLength);
+    private void FireLinearProjectileAtTarget(WeaponState weapon, Vector3 target) {
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, target - transform.position, weapon.template.projectile.effectiveLength);
         GameObject nearest = null;
-        float minDistance = projectile.effectiveLength + 1;
+        float minDistance = weapon.template.projectile.effectiveLength + 1;
         foreach (RaycastHit hit in hits) {
-            if (hit.distance < minDistance) {
+            if (hit.distance < minDistance && hit.transform.gameObject != this.gameObject) {
                 minDistance = hit.distance;
                 nearest = hit.transform.gameObject;
             }
         }
 
+        Vector3 hitReceiver = target;
         if (nearest != null) {
-            foreach (EffectContainer c in projectile.effects) {
+            foreach (EffectContainer c in weapon.template.projectile.effects) {
                 c.ApplyEffect(nearest);
             }
+            hitReceiver = nearest.transform.position;
+            Debug.Log(this.gameObject.name + " shoot and hit " + nearest.name + ", applying an effect");
         }
 
-
+        //since the projectile could hit another target on it's way, let's draw ray to the actual hit receiver
+        PerformFiringVisualsForWeapon(weapon, hitReceiver);
 
     }
 
@@ -102,20 +119,25 @@ public partial class Unit {
     }
 
     //visuals
-    private void PerformFiringVisualsForWeapon(WeaponState weapon) {
-        if (attackTargetUnit == null && attackTargetPosition == null) return;
-
-        Vector3 target;
-        if (attackTargetUnit == null) {
-            target = (Vector3)attackTargetPosition;
-        } else {
-            target = attackTargetUnit.transform.position;
-        }
-
+    private void PerformFiringVisualsForWeapon(WeaponState weapon, Vector3 realTarget) {
+        
 
         Action gizmoAction = delegate {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, target);
+
+            int count = 5;
+            float width = 0.1f;
+            Camera c = Camera.current;
+            Vector3 p1 = transform.position;
+            Vector3 p2 = realTarget;
+            Vector3 v1 = (p2 - p1).normalized; // line direction
+            Vector3 v2 = (c.transform.position - p1).normalized; // direction to camera
+            Vector3 n = Vector3.Cross(v1, v2); // normal vector
+
+            for (int i = 0; i < count; i++) {
+                Vector3 o = n * width * ((float)i / (count - 1) - 0.5f);
+                Gizmos.DrawLine(p1 + o, p2 + o);
+            }
         };
 
         gizmoActions.Add(gizmoAction);

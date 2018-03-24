@@ -12,7 +12,7 @@ public class UnitWeaponTemplate : Object {
     public float maxPitch { get; private set; }
     public float angularSpeed { get; private set; } //pitch and heading speeds are the same, will split if it's really needed at some point
 
-    public float targetingTime { get; private set; }
+    public float targetingTime { get; private set; } //minimum targeting time. actual targeting time could be more due to finite angular speed
     public float reloadTime { get; private set; }
 
     public float effectiveRange { get; private set; } //if target is beyond this range unit won't even try to shoot

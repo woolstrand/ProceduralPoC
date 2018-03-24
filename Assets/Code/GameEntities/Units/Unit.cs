@@ -28,6 +28,7 @@ public partial class Unit : MonoBehaviour {
     //External interactions
     public void SetMovementTarget(Vector3 target) {
         this.nextMovementTarget = target;
+        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
     public void SetAttackTarget(Vector3 target) {
@@ -37,35 +38,45 @@ public partial class Unit : MonoBehaviour {
         }
 
         this.attackTargetPosition = target;
+        this.attackTargetUnit = null;
         this.UpdateWeaponTargetAngles();
     }
 
     public void SetAttackTarget(GameObject target) {
-        if (attackTargetUnit != target) { //reset targetting counter
+        if (attackTargetUnit != target) { //reset targeting counter
             currentState.DefaultWeapon().StartTargeting();
         }
 
-        this.attackTargetUnit = target;
-        this.UpdateWeaponTargetAngles();
+        attackTargetUnit = target;
+        attackTargetPosition = null;
+        UpdateWeaponTargetAngles();
     }
 
 	
     //Internal mechanics
 	// Update is called once per frame
 	void Update () {
+
+        if (attackTargetUnit != null) {
+            UpdateWeaponTargetAngles(); //update target angles if aiming at possibly moving target or if the unit moves itself
+        }
+
         PerformMovementJob();
         PerformAttackJob(); 
         
-        if (this.health <= 0) {
-            GameObject.Destroy(this.gameObject);
+        if (health <= 0) {
+            Debug.Log(gameObject.name + " got zero health, destroying");
+            Destroy(gameObject);
         }  
     }
 
     private void OnDrawGizmos() {
-        foreach (Action a in gizmoActions) {
-            a();
+        if (gizmoActions != null) {
+            foreach (Action a in gizmoActions) {
+                a();
+            }
+            gizmoActions.Clear();
         }
-        gizmoActions.Clear();
     }
 
 }

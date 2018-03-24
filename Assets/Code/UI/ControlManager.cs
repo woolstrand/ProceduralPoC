@@ -14,19 +14,20 @@ public class ControlManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonDown("Fire1")) {
+        if (Input.GetButtonDown("Fire1")) { //left button to select or move
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo)) {
                 if (hitInfo.transform.gameObject.name.Equals("Ground") && selectedUnit != null) {
-                    selectedUnit.GetComponent<Unit>().SetMovementTarget(hitInfo.point);
+                    Vector3 target = hitInfo.point;
+                    selectedUnit.GetComponent<Unit>().SetMovementTarget(target);
                 } else if (hitInfo.transform.gameObject.name.Contains("Unit")) {
                     selectedUnit = hitInfo.transform.gameObject;
                 }
             }
         }
 
-        if (Input.GetButtonDown("Fire2")) {
+        if (Input.GetButtonDown("Fire2")) { //right button to create new unit (also Alt does that, so Alt-Tab will produce some units)
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo)) {
@@ -35,11 +36,13 @@ public class ControlManager : MonoBehaviour {
                     unit.transform.position = new Vector3(hitInfo.point.x, 0.1f, hitInfo.point.z);
                     unit.GetComponent<Unit>().SetMovementTarget(unit.transform.position);
                     unit.GetComponent<Unit>().template = UnitTemplateFactory.defaultUnitTemplate();
+
+                    unit.name = unit.name + ((int)(Random.value * 100)).ToString();
                 }
             }
         }
 
-        if (Input.GetButtonDown("Fire3")) {
+        if (Input.GetButtonDown("Fire3")) { //Middle mouse button to target terrain or unit
             if (selectedUnit == null) return;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

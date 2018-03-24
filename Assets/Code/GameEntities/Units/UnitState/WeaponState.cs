@@ -26,22 +26,29 @@ public class WeaponState {
         targetingStartedAt = Time.time;
     }
 
+    public void UpdateTargetAngles(float targetHeading, float targetPitch) {
+        this.targetHeading = targetHeading;
+        this.targetPitch = targetPitch;
+    }
+
     public void PerformTargeting(float deltaTime) {
         if (Math.Abs(targetPitch - pitch) < template.angularSpeed * deltaTime) {
-            pitch = targetPitch;
+            pitch = targetPitch; //to eliminate flicker
         } else {
             pitch += Math.Sign(targetPitch - pitch) * deltaTime;
-            if (pitch < template.minPitch) pitch= template.minPitch;
-            if (pitch > template.maxPitch) pitch = template.maxPitch;
         }
 
+        if (pitch < template.minPitch) pitch = template.minPitch;
+        if (pitch > template.maxPitch) pitch = template.maxPitch;
+
         if (Math.Abs(targetHeading - heading) < template.angularSpeed * deltaTime) {
-            heading = targetHeading;
+            heading = targetHeading; //to eliminate flicker
         } else {
             heading += Math.Sign(targetHeading - heading) * deltaTime;
-            if (heading < template.minHeading) heading = template.minHeading;
-            if (heading > template.maxHeading) heading = template.maxHeading;
         }
+
+        if (heading < template.minHeading) heading = template.minHeading;
+        if (heading > template.maxHeading) heading = template.maxHeading;
     }
 
     public bool ReadyToFire() {
