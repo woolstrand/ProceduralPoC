@@ -73,7 +73,11 @@ public partial class Unit {
                         }
                         break;
                     case ProjectileType.SubUnit:
-                        FireSubUnitProjectileAtTarget(weapon, attackTargetUnit.transform.position);
+                        if (attackTargetUnit != null) {
+                            FireSubUnitProjectileAtTarget(weapon, attackTargetUnit.transform.position);
+                        } else {
+                            FireSubUnitProjectileAtTarget(weapon, (Vector3)attackTargetPosition);
+                        }
                         weapon.Fire();
                         break;
                     default:
@@ -85,7 +89,7 @@ public partial class Unit {
 
     private void FireDirectProjectileAtTarget(UnitWeaponProjectileTemplate projectile, GameObject target) {
         foreach (EffectContainer c in projectile.effects) {
-            c.ApplyEffect(target);
+            c.ApplyEffect(target, target.transform.position);
         }
     }
 
@@ -107,7 +111,7 @@ public partial class Unit {
             GameObject hitObject = ((RaycastHit)nearestHit).transform.gameObject;
 
             foreach (EffectContainer c in weapon.template.projectile.effects) {
-                c.ApplyEffect(hitObject);
+                c.ApplyEffect(hitObject, ((RaycastHit)nearestHit).point);
             }
             hitReceiver = ((RaycastHit)nearestHit).point;
             Debug.Log(this.gameObject.name + " shoot and hit " + hitObject.name + ", applying an effect");
@@ -119,7 +123,7 @@ public partial class Unit {
     }
 
     private void FireSubUnitProjectileAtTarget(WeaponState weapon, Vector3 target) {
-        var projectileUnit = Instantiate(GameObject.Find("Projectile"));
+        var projectileUnit = UnitFactory.CreateUnit(weapon.template.projectile.projectileUnitTemplate, "ammo");
         projectileUnit.transform.position = transform.position + weapon.template.barrelOrigin;
         projectileUnit.transform.rotation = Quaternion.LookRotation(target - projectileUnit.transform.position);
         var unitDesc = projectileUnit.GetComponent<Unit>();

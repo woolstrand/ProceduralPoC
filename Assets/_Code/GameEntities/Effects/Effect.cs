@@ -20,7 +20,7 @@ public class EffectContainer {
     public bool isAreaEffect;
     public float areaRadius;
 
-    public void ApplyEffect(GameObject targetUnit) {
+    public void ApplyEffect(GameObject targetUnit, Vector3 applicationPoint) {
         if (targetUnit != null && isAreaEffect == false) {
             Unit unit = targetUnit.GetComponent<Unit>();
             if (unit != null) {
@@ -28,14 +28,19 @@ public class EffectContainer {
             }
         }
 
-        if (targetUnit != null && isAreaEffect == true) {
-            Collider[] colliders = Physics.OverlapSphere(targetUnit.transform.position, areaRadius);
+        if (isAreaEffect == true) {
+            Collider[] colliders = Physics.OverlapSphere(applicationPoint, areaRadius);
             foreach (Collider c in colliders) {
                 Unit unit = c.gameObject.GetComponent<Unit>();
                 if (unit != null) {
                     unit.ApplyEffect(containedEffect);
                 }
             }
+
+            GameObject visualizer = GameObject.Instantiate(Resources.Load("TemporaryUtilities/AreaEffectVisualizer")) as GameObject;
+            visualizer.GetComponent<AreaEffectVisualizer>().ttl = 1.0f;
+            visualizer.GetComponent<AreaEffectVisualizer>().radius = areaRadius;
+            visualizer.transform.position = applicationPoint;
         }
     }
 

@@ -299,6 +299,7 @@
     <Compile Include="Assets\_Code\GameEntities\Units\UnitTemplate\UnitWeaponTemplate.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitWeaponry.cs" />
     <Compile Include="Assets\_Code\UI\ControlManager.cs" />
+    <Compile Include="Assets\AreaEffectVisualizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

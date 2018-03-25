@@ -13,7 +13,7 @@ class EffectFactory {
     //pure effects
 
     public static Effect BasicDamageEffect(float amount) {
-        Effect e = new Effect("health", physicalDamageType(), -10);
+        Effect e = new Effect("health", physicalDamageType(), -amount);
         return e;
     }
 

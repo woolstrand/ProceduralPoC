@@ -23,6 +23,8 @@ public partial class Unit : MonoBehaviour {
         if (currentState == null) {
             InitializeInternalData();
         }
+
+        UpdateMovementConstraints();
     }
 
     public void InitializeInternalData() {
@@ -32,17 +34,20 @@ public partial class Unit : MonoBehaviour {
 
         currentState = new UnitState(template.initialState);
         health = currentState.template.parametersTemplate.maximumHealth;
-        SetMovementTarget(transform.position);
+        nextMovementTarget = transform.position;
     }
 
-    //External interactions
-    public void SetMovementTarget(Vector3 target) {
-        this.nextMovementTarget = target;
+    public void UpdateMovementConstraints() {
         if (currentState.currentMovementSettings().isLockedVertically) {
             rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         } else {
             rb.constraints = RigidbodyConstraints.None;
         }
+    }
+
+    //External interactions
+    public void SetMovementTarget(Vector3 target) {
+        nextMovementTarget = target;
     }
 
     public void SetAttackTarget(Vector3 target) {
@@ -89,7 +94,7 @@ public partial class Unit : MonoBehaviour {
         List<EffectContainer> collisionList = currentState.template.parametersTemplate.EffectsForEvent("collision");
         if (collisionList != null) {
             foreach (EffectContainer ec in collisionList) {
-                ec.ApplyEffect(collision.gameObject);
+                ec.ApplyEffect(collision.gameObject, collision.contacts[0].point);
             }
         }
     }

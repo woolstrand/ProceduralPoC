@@ -25,9 +25,6 @@ public class UnitTemplateFactory  {
     public static UnitTemplate defaultUnitTemplate2() {
         UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 15.0f, maxAngularSpeed: 100.0f, maxAcceleration: 10.0f);
 
-        Effect weaponEffect = EffectFactory.BasicDamageEffect(10);
-        EffectContainer container = EffectFactory.AOEHitContainer(weaponEffect, 5.0f);
-
         UnitTemplate projectileUnitTemplate = DefaultProjectileUnitTemplate();
 
 
@@ -44,7 +41,7 @@ public class UnitTemplateFactory  {
     }
 
     public static UnitTemplate DefaultProjectileUnitTemplate() {
-        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 25.0f, maxAngularSpeed: 10.0f, maxAcceleration: 10.0f, minSpeed: 5.0f, lockedVertically: false);
+        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 25.0f, maxAngularSpeed: 10.0f, maxAcceleration: 1.0f, minSpeed: 5.0f, lockedVertically: false);
 
         Effect weaponEffect = EffectFactory.BasicDamageEffect(80);
         EffectContainer container = EffectFactory.AOEHitContainer(weaponEffect, 5.0f);

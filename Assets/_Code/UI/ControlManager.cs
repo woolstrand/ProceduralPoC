@@ -12,6 +12,7 @@ public class ControlManager : MonoBehaviour {
     public float zoomSpeed = 100.0f;
 
     private bool forcedAttackMode;
+    private int unitId = 0;
 
     // Use this for initialization
     void Start() {
@@ -35,20 +36,18 @@ public class ControlManager : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo)) {
-                if (selectedUnit) {
-                    var unit = Instantiate(selectedUnit);
-                    unit.transform.position = new Vector3(hitInfo.point.x, 0.1f, hitInfo.point.z);
 
-                    if (unit.name.Contains("Unit2")) {
-                        unit.GetComponent<Unit>().template = UnitTemplateFactory.defaultUnitTemplate2();
-                    } else {
-                        unit.GetComponent<Unit>().template = UnitTemplateFactory.defaultUnitTemplate();
-                    }
+                GameObject o = null;
 
-                    unit.GetComponent<Unit>().InitializeInternalData();
-                    unit.GetComponent<Unit>().SetMovementTarget(unit.transform.position);
-                    unit.name = unit.name + ((int)(Random.value * 100)).ToString();
+                if (unitId == 0) {
+                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate(), "unit");
+                } else if (unitId == 1) {
+                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate2(), "unit2");
                 }
+
+                o.transform.position = new Vector3(hitInfo.point.x, 0.01f, hitInfo.point.z);
+                o.GetComponent<Unit>().SetMovementTarget(o.transform.position);
+
             }
         }
 
@@ -74,6 +73,10 @@ public class ControlManager : MonoBehaviour {
 
         if (Input.GetButtonDown("ForcedAttack")) {
             forcedAttackMode = !forcedAttackMode;
+        }
+
+        if (Input.GetButtonDown("CycleUnits")) {
+            unitId = (unitId + 1) % 2;
         }
 
     }

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 846cad8d4b4eca64c9eae72f51ff968d
-timeCreated: 1521966066
+guid: a70f5967f98b73241926618060a76c16
+timeCreated: 1521978000
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -8,9 +8,9 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: body
-    2100002: red
-    2100004: cabin
-    2100006: ribs
+    2100002: warhead
+    2100004: k
+    2100006: y
     2300000: //RootNode
     3300000: //RootNode
     4300000: Empty_Mesh
