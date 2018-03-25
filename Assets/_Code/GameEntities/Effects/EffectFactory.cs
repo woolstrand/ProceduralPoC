@@ -23,9 +23,20 @@ class EffectFactory {
         EffectContainer container = new EffectContainer();
 
         container.containedEffect = e;
-  
+
         container.isAreaEffect = false;
         container.areaRadius = 0.0f;
+
+        return container;
+    }
+
+    public static EffectContainer AOEHitContainer(Effect e, float radius = 1.0f) {
+        EffectContainer container = new EffectContainer();
+
+        container.containedEffect = e;
+
+        container.isAreaEffect = true;
+        container.areaRadius = radius;
 
         return container;
     }

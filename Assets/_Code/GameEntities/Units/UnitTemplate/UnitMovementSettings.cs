@@ -9,11 +9,15 @@ public class UnitMovementSettings : Object {
     public float maxAcceleration { get; private set; } //meters per second^2
     public float maxAngularSpeed { get; private set; } //radians per second
 
-    public UnitMovementSettings(float maxSpeed, float maxAngularSpeed = float.PositiveInfinity, float maxAcceleration = float.PositiveInfinity, float minSpeed = 0) {
+    public bool isLockedVertically;
+
+
+    public UnitMovementSettings(float maxSpeed, float maxAngularSpeed = float.PositiveInfinity, float maxAcceleration = float.PositiveInfinity, float minSpeed = 0, bool lockedVertically = true) {
         this.maxSpeed = maxSpeed;
         this.minSpeed = minSpeed;
         this.maxAngularSpeed = maxAngularSpeed;
         this.maxAcceleration = maxAcceleration;
+        isLockedVertically = lockedVertically;
     }
 
     public UnitMovementSettings() {

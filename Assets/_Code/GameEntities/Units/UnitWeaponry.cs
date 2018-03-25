@@ -25,8 +25,6 @@ public partial class Unit {
         float targetHeading = Vector3.Angle(forwardProjection, targetProjection) * Mathf.Deg2Rad;
 
         float targetPitch = Mathf.Asin(objectToTarget.y);
-//        float targetHeading = Mathf.Atan2(objectToTarget.x, objectToTarget.z);
-        //targetHeading = targetHeading - (-transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
 
         if (targetHeading > Mathf.PI) targetHeading -= Mathf.PI;
         if (targetHeading < -Mathf.PI) targetHeading += Mathf.PI;
@@ -46,7 +44,7 @@ public partial class Unit {
             //selecting target position depending on what is set as target
             Vector3 targetPosition;
             if (attackTargetUnit != null) {
-                targetPosition = attackTargetUnit.transform.position;
+                targetPosition = attackTargetUnit.GetComponent<Renderer>().bounds.center;
             } else {
                 targetPosition = (Vector3)attackTargetPosition;
             }
@@ -75,6 +73,8 @@ public partial class Unit {
                         }
                         break;
                     case ProjectileType.SubUnit:
+                        FireSubUnitProjectileAtTarget(weapon, attackTargetUnit.transform.position);
+                        weapon.Fire();
                         break;
                     default:
                         break;
@@ -90,23 +90,27 @@ public partial class Unit {
     }
 
     private void FireLinearProjectileAtTarget(WeaponState weapon, Vector3 target) {
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, target - transform.position, weapon.template.projectile.effectiveLength);
-        GameObject nearest = null;
+        Vector3 firingOrigin = transform.position + weapon.template.barrelOrigin;
+        RaycastHit[] hits = Physics.RaycastAll(firingOrigin, target - firingOrigin, weapon.template.projectile.effectiveLength);
+        RaycastHit? nearestHit = null;
         float minDistance = weapon.template.projectile.effectiveLength + 1;
+        
         foreach (RaycastHit hit in hits) {
             if (hit.distance < minDistance && hit.transform.gameObject != this.gameObject) {
                 minDistance = hit.distance;
-                nearest = hit.transform.gameObject;
+                nearestHit = hit;
             }
         }
 
         Vector3 hitReceiver = target;
-        if (nearest != null) {
+        if (nearestHit != null) {
+            GameObject hitObject = ((RaycastHit)nearestHit).transform.gameObject;
+
             foreach (EffectContainer c in weapon.template.projectile.effects) {
-                c.ApplyEffect(nearest);
+                c.ApplyEffect(hitObject);
             }
-            hitReceiver = nearest.transform.position;
-            Debug.Log(this.gameObject.name + " shoot and hit " + nearest.name + ", applying an effect");
+            hitReceiver = ((RaycastHit)nearestHit).point;
+            Debug.Log(this.gameObject.name + " shoot and hit " + hitObject.name + ", applying an effect");
         }
 
         //since the projectile could hit another target on it's way, let's draw ray to the actual hit receiver
@@ -114,8 +118,15 @@ public partial class Unit {
 
     }
 
-    private void FireSubUnitProjectileAtTarget(UnitWeaponProjectileTemplate projectile, Vector3 target) {
+    private void FireSubUnitProjectileAtTarget(WeaponState weapon, Vector3 target) {
+        var projectileUnit = Instantiate(GameObject.Find("Projectile"));
+        projectileUnit.transform.position = transform.position + weapon.template.barrelOrigin;
+        projectileUnit.transform.rotation = Quaternion.LookRotation(target - projectileUnit.transform.position);
+        var unitDesc = projectileUnit.GetComponent<Unit>();
+        unitDesc.template = weapon.template.projectile.projectileUnitTemplate;
+        unitDesc.InitializeInternalData();
 
+        unitDesc.SetMovementTarget(target);
     }
 
     //visuals
@@ -128,7 +139,7 @@ public partial class Unit {
             int count = 5;
             float width = 0.1f;
             Camera c = Camera.current;
-            Vector3 p1 = transform.position;
+            Vector3 p1 = transform.position + weapon.template.barrelOrigin;
             Vector3 p2 = realTarget;
             Vector3 v1 = (p2 - p1).normalized; // line direction
             Vector3 v2 = (c.transform.position - p1).normalized; // direction to camera

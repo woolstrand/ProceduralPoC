@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System;
 
+using UnityEngine;
 
 
-public class UnitWeaponTemplate : Object {
+
+public class UnitWeaponTemplate {
 
     public float minHeading { get; private set; }
     public float maxHeading { get; private set; }
@@ -18,6 +20,7 @@ public class UnitWeaponTemplate : Object {
     public float effectiveRange { get; private set; } //if target is beyond this range unit won't even try to shoot
 
     public UnitWeaponProjectileTemplate projectile;
+    public Vector3 barrelOrigin; //point relative to unit's center from where chind unit or casted ray is spawned. defaults to object's geometrical center.
 
     public UnitWeaponTemplate(UnitWeaponProjectileTemplate projectile,
         float reloadTime = 1.0f, float targetingTime = 0.5f,

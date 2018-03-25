@@ -22,7 +22,20 @@ public class EffectContainer {
 
     public void ApplyEffect(GameObject targetUnit) {
         if (targetUnit != null && isAreaEffect == false) {
-            targetUnit.GetComponent<Unit>().ApplyEffect(containedEffect);
+            Unit unit = targetUnit.GetComponent<Unit>();
+            if (unit != null) {
+                unit.ApplyEffect(containedEffect);
+            }
+        }
+
+        if (targetUnit != null && isAreaEffect == true) {
+            Collider[] colliders = Physics.OverlapSphere(targetUnit.transform.position, areaRadius);
+            foreach (Collider c in colliders) {
+                Unit unit = c.gameObject.GetComponent<Unit>();
+                if (unit != null) {
+                    unit.ApplyEffect(containedEffect);
+                }
+            }
         }
     }
 

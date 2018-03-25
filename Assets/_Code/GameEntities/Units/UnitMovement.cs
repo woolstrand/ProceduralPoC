@@ -14,7 +14,7 @@ public partial class Unit {
         if (nextMovementTarget != transform.position) {
 
             Vector3 targetDirection = (nextMovementTarget - transform.position);
-            targetDirection.y = 0;
+            if (currentState.currentMovementSettings().isLockedVertically == true) { targetDirection.y = 0; }
 
             if (targetDirection.sqrMagnitude > 0.1) { //we need to rotate and move unit only if there is some real path ahead
                 targetDirection.Normalize();
@@ -24,7 +24,7 @@ public partial class Unit {
                 float maxRotation = currentState.currentMovementSettings().maxAngularSpeed * Time.deltaTime;
                 if (Math.Abs(angle) > maxRotation) {
                     Vector3 nextForward = Vector3.RotateTowards(transform.forward, targetDirection, maxRotation, 0);
-                    nextForward.y = 0;
+                    if (currentState.currentMovementSettings().isLockedVertically == true) { nextForward.y = 0; }
 
                     transform.forward = nextForward;
                 } else { //rotation is acceptable to start moving
@@ -41,7 +41,8 @@ public partial class Unit {
 
                     Vector3 movement = Vector3.forward * speed * Time.deltaTime;
 
-                    if (movement.sqrMagnitude < (transform.position - nextMovementTarget).sqrMagnitude) {
+                    if (movement.sqrMagnitude < (transform.position - nextMovementTarget).sqrMagnitude ||
+                        currentState.currentMovementSettings().minSpeed > 0) {
                         transform.Translate(movement);
                     } else {
                         transform.position = nextMovementTarget; //eliminating jitter around the target
