@@ -62,11 +62,14 @@ public class ControlManager : MonoBehaviour {
                     if (forcedAttackMode) {
                         forcedAttackMode = false;
                         selectedUnit.GetComponent<Unit>().SetAttackTarget(hitInfo.point);
+                        selectedUnit.GetComponent<Unit>().SetOrder(UnitOrder.Attack);
                     } else {
                         selectedUnit.GetComponent<Unit>().SetMovementTarget(target);
+                        selectedUnit.GetComponent<Unit>().SetOrder(UnitOrder.Move);
                     }
                 } else if (hitInfo.transform.gameObject.name.Contains("Unit")) {
                     selectedUnit.GetComponent<Unit>().SetAttackTarget(hitInfo.transform.gameObject);
+                    selectedUnit.GetComponent<Unit>().SetOrder(UnitOrder.Attack);
                 }
             }
         }

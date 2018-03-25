@@ -74,7 +74,7 @@ public partial class Unit {
                         break;
                     case ProjectileType.SubUnit:
                         if (attackTargetUnit != null) {
-                            FireSubUnitProjectileAtTarget(weapon, attackTargetUnit.transform.position);
+                            FireSubUnitProjectileAtTarget(weapon, attackTargetUnit);
                         } else {
                             FireSubUnitProjectileAtTarget(weapon, (Vector3)attackTargetPosition);
                         }
@@ -122,7 +122,18 @@ public partial class Unit {
 
     }
 
-    private void FireSubUnitProjectileAtTarget(WeaponState weapon, Vector3 target) {
+    private GameObject FireSubUnitProjectileAtTarget(WeaponState weapon, GameObject target) {
+        GameObject projectileUnit = FireSubUnitProjectileAtTarget(weapon, target.transform.position);
+        Unit u = projectileUnit.GetComponent<Unit>();
+
+        u.SetMovementTarget(target);
+        u.SetOrder(UnitOrder.Move);
+
+        return projectileUnit;
+    }
+
+
+    private GameObject FireSubUnitProjectileAtTarget(WeaponState weapon, Vector3 target) {
         var projectileUnit = UnitFactory.CreateUnit(weapon.template.projectile.projectileUnitTemplate, "ammo");
         projectileUnit.transform.position = transform.position + weapon.template.barrelOrigin;
         projectileUnit.transform.rotation = Quaternion.LookRotation(target - projectileUnit.transform.position);
@@ -131,6 +142,8 @@ public partial class Unit {
         unitDesc.InitializeInternalData();
 
         unitDesc.SetMovementTarget(target);
+
+        return projectileUnit;
     }
 
     //visuals

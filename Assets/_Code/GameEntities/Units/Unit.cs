@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
 
+
 public partial class Unit : MonoBehaviour {
 
     public Rigidbody rb;
@@ -11,6 +12,8 @@ public partial class Unit : MonoBehaviour {
     public UnitTemplate template;
     public UnitState currentState { get; private set; }
     public float health {get; private set; }
+
+
 
 
     private List<Action> gizmoActions;
@@ -50,6 +53,10 @@ public partial class Unit : MonoBehaviour {
         nextMovementTarget = target;
     }
 
+    public void SetMovementTarget(GameObject target) {
+        movementTargetObject = target;
+    }
+
     public void SetAttackTarget(Vector3 target) {
         if (attackTargetPosition != null && target != null &&
             Vector3.Distance((Vector3)attackTargetPosition, target) > 0.5) {
@@ -71,6 +78,28 @@ public partial class Unit : MonoBehaviour {
         UpdateWeaponTargetAngles();
     }
 
+    public void SetOrder(UnitOrder order) {
+        this.order = order;
+
+        if (order == UnitOrder.Idle) {
+            movementTargetObject = null;
+            attackTargetUnit = null;
+            attackTargetPosition = null;
+            orientationTarget = null;
+        }
+
+        if (order == UnitOrder.Attack) {
+            movementTargetObject = null;
+        }
+
+        if (order == UnitOrder.Move) {
+            attackTargetPosition = null;
+            attackTargetUnit = null;
+        }
+
+        UpdateTargetsWithinCurrentOrder();
+    }
+
 	
     //Internal mechanics
 	// Update is called once per frame
@@ -83,6 +112,10 @@ public partial class Unit : MonoBehaviour {
 
         if (attackTargetUnit != null) {
             UpdateWeaponTargetAngles(); //update target angles if aiming at possibly moving target or if the unit moves itself
+        }
+
+        if (order != UnitOrder.Idle) {
+            UpdateTargetsWithinCurrentOrder();
         }
 
         PerformMovementJob();

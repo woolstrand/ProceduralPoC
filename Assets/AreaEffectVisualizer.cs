@@ -11,7 +11,7 @@ public class AreaEffectVisualizer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        gameObject.transform.localScale = new Vector3(radius * 2, 0.01f, radius * 2); //object diameter is 1.0 => scale = radius * 2
+        gameObject.transform.localScale = new Vector3(radius * 2, 0.01f, radius * 2); //object initial diameter is 1.0 => scale = radius * 2
         creationTime = Time.time;
 	}
 	

@@ -15,7 +15,7 @@ public class UnitTemplateFactory  {
             minHeading: -0.5f, maxHeading: 0.5f);
         weaponTemplate.barrelOrigin = new Vector3(0, 0.5f, 0);
 
-        UnitParametersTemplate parameters = new UnitParametersTemplate(movement, maximumHealth: 100.0f, weapons: new List<UnitWeaponTemplate> { weaponTemplate });
+        UnitParametersTemplate parameters = new UnitParametersTemplate(movement, maximumHealth: 250.0f, weapons: new List<UnitWeaponTemplate> { weaponTemplate });
         UnitStateTemplate state = new UnitStateTemplate(parameters);
         UnitTemplate template = new UnitTemplate(state);
 
@@ -23,13 +23,13 @@ public class UnitTemplateFactory  {
     }
 
     public static UnitTemplate defaultUnitTemplate2() {
-        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 15.0f, maxAngularSpeed: 100.0f, maxAcceleration: 10.0f);
+        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 10.0f, maxAngularSpeed: 100.0f, maxAcceleration: 1.0f);
 
         UnitTemplate projectileUnitTemplate = DefaultProjectileUnitTemplate();
 
 
         UnitWeaponProjectileTemplate projectile = new UnitWeaponProjectileTemplate(projectileUnitTemplate);
-        UnitWeaponTemplate weaponTemplate = new UnitWeaponTemplate(projectile, reloadTime: 3.5f, targetingTime: 0.5f,
+        UnitWeaponTemplate weaponTemplate = new UnitWeaponTemplate(projectile, reloadTime: 1.5f, targetingTime: 0.5f,
             minHeading: -1.5f, maxHeading: 1.5f);
         weaponTemplate.barrelOrigin = new Vector3(0, 1.5f, 0);
 
@@ -41,7 +41,7 @@ public class UnitTemplateFactory  {
     }
 
     public static UnitTemplate DefaultProjectileUnitTemplate() {
-        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 25.0f, maxAngularSpeed: 10.0f, maxAcceleration: 1.0f, minSpeed: 5.0f, lockedVertically: false);
+        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 15.0f, maxAngularSpeed: 1.0f, maxAcceleration: 2.5f, minSpeed: 15.0f, lockedVertically: false);
 
         Effect weaponEffect = EffectFactory.BasicDamageEffect(80);
         EffectContainer container = EffectFactory.AOEHitContainer(weaponEffect, 5.0f);
