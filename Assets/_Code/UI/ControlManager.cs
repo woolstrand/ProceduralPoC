@@ -6,28 +6,30 @@ public class ControlManager : MonoBehaviour {
 
     public GameObject ground;
     public GameObject selectedUnit;
+    public Camera camera;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    public float scrollSpeed = 6.0f;
+    public float zoomSpeed = 100.0f;
+
+    // Use this for initialization
+    void Start() {
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonDown("Fire1")) { //left button to select or move
+        PerformMapMoving();
+
+        if (Input.GetButtonDown("Fire1")) { //left button to select
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo)) {
-                if (hitInfo.transform.gameObject.name.Equals("Ground") && selectedUnit != null) {
-                    Vector3 target = hitInfo.point;
-                    selectedUnit.GetComponent<Unit>().SetMovementTarget(target);
-                } else if (hitInfo.transform.gameObject.name.Contains("Unit")) {
+                if (hitInfo.transform.gameObject.name.Contains("Unit")) {
                     selectedUnit = hitInfo.transform.gameObject;
                 }
             }
         }
 
-        if (Input.GetButtonDown("Fire2")) { //right button to create new unit (also Alt does that, so Alt-Tab will produce some units)
+        if (Input.GetButtonDown("Fire3")) { //right button to create new unit (also Alt does that, so Alt-Tab will produce some units)
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo)) {
@@ -42,19 +44,31 @@ public class ControlManager : MonoBehaviour {
             }
         }
 
-        if (Input.GetButtonDown("Fire3")) { //Middle mouse button to target terrain or unit
+        if (Input.GetButtonDown("Fire2")) { //Right mouse button to target terrain for movement or unit for attack
             if (selectedUnit == null) return;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo)) {
                 if (hitInfo.transform.gameObject.name.Equals("Ground")) {
-                    selectedUnit.GetComponent<Unit>().SetAttackTarget(hitInfo.point);
+                    Vector3 target = hitInfo.point;
+                    selectedUnit.GetComponent<Unit>().SetMovementTarget(target);
+//                    selectedUnit.GetComponent<Unit>().SetAttackTarget(hitInfo.point);
                 } else if (hitInfo.transform.gameObject.name.Contains("Unit")) {
                     selectedUnit.GetComponent<Unit>().SetAttackTarget(hitInfo.transform.gameObject);
                 }
             }
         }
 
+    }
+
+    void PerformMapMoving() {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+        if (horizontal != 0 || vertical != 0 || scroll != 0) {
+            camera.transform.Translate(horizontal * scrollSpeed * Time.deltaTime, scroll * zoomSpeed * Time.deltaTime, vertical * scrollSpeed * Time.deltaTime, Space.World);
+        }
     }
 }
