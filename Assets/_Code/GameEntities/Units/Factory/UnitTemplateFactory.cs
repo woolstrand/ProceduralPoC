@@ -48,7 +48,10 @@ public class UnitTemplateFactory  {
 
         
         UnitParametersTemplate parameters = new UnitParametersTemplate(movement, maximumHealth: 10.0f);
+        parameters.isControllable = false;
+        parameters.isSelectable = false;
         parameters.AddEffectForEvent("collision", container);
+        parameters.AddEffectForEvent("destruction", container);
 
         UnitStateTemplate state = new UnitStateTemplate(parameters);
         UnitTemplate template = new UnitTemplate(state);

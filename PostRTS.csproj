@@ -286,12 +286,12 @@
   <ItemGroup>
     <Compile Include="Assets\_Code\GameEntities\Effects\Effect.cs" />
     <Compile Include="Assets\_Code\GameEntities\Effects\EffectFactory.cs" />
-    <Compile Include="Assets\_Code\GameEntities\Units\UnitOrders.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\Factory\UnitFactory.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\Factory\UnitTemplateFactory.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\Unit.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitEffects.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitMovement.cs" />
+    <Compile Include="Assets\_Code\GameEntities\Units\UnitOrders.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitState\UnitState.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitState\WeaponState.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitTemplate\UnitMovementSettings.cs" />
@@ -301,6 +301,7 @@
     <Compile Include="Assets\_Code\GameEntities\Units\UnitTemplate\UnitWeaponProjectileTemplate.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitTemplate\UnitWeaponTemplate.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitWeaponry.cs" />
+    <Compile Include="Assets\_Code\UI\GUIManager.cs" />
     <Compile Include="Assets\_Code\UI\ControlManager.cs" />
     <Compile Include="Assets\AreaEffectVisualizer.cs" />
   </ItemGroup>

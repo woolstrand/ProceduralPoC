@@ -8,8 +8,10 @@ public class UnitParametersTemplate : Object {
     public List<UnitWeaponTemplate> weapons;
 
     private Dictionary<string, List<EffectContainer>> triggeredEffects;
-
     public float maximumHealth { get; private set; }
+
+    public bool isSelectable; //can be selected and inspected by the user
+    public bool isControllable; //can be controlled by faction owner
 
     public UnitParametersTemplate() {
         defaultMovementSettings = new UnitMovementSettings();
@@ -18,7 +20,7 @@ public class UnitParametersTemplate : Object {
         maximumHealth = 100;
     }
 
-    public UnitParametersTemplate(UnitMovementSettings defaultMovementSettings, float maximumHealth, List<UnitWeaponTemplate> weapons = null) {
+    public UnitParametersTemplate(UnitMovementSettings defaultMovementSettings, float maximumHealth, List<UnitWeaponTemplate> weapons = null, bool selectable = true, bool controllable = true) {
         triggeredEffects = new Dictionary<string, List<EffectContainer>>();
         this.maximumHealth = maximumHealth;
         this.defaultMovementSettings = defaultMovementSettings;
@@ -27,6 +29,9 @@ public class UnitParametersTemplate : Object {
         } else {
             this.weapons = new List<UnitWeaponTemplate>();
         }
+
+        isSelectable = selectable;
+        isControllable = controllable;
     }
 
     public void AddEffectForEvent(string eventName, EffectContainer effect) {

@@ -44,19 +44,11 @@ public partial class Unit {
                     Vector3 direction = target - transform.position;
                     float directionMagnitude2 = Vector3.SqrMagnitude(direction);
                     if (directionMagnitude2 < range*range) {
-                        //enemy is already within attack range
-                        /*                        Vector3 directionProjection = Vector3.ProjectOnPlane(direction, Vector3.up);
-                                                Vector3 forwardProjection = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
-                                                UnitWeaponTemplate weaponTemplate = currentState.DefaultWeapon().template;
-                                                float angle = Vector3.Angle(forwardProjection, directionProjection) * Mathf.Deg2Rad;
-                                                if (angle > weaponTemplate.maxHeading || angle < weaponTemplate.minHeading) {*/
 
                         UnitWeaponTemplate weaponTemplate = currentState.DefaultWeapon().template;
                         float desiredAngle = (weaponTemplate.maxHeading + weaponTemplate.minHeading) / 2;
                         Vector3 desiredVector = Quaternion.AngleAxis(desiredAngle, transform.up) * direction;
                         orientationTarget = desiredVector;
-
-                        //}
 
                     } else {
                         //move from target towards current position by attack range: this is the nearest point suitable for firing

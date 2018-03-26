@@ -8,6 +8,7 @@ public class UnitFactory  {
     //created unit with chosen template and with mesh based on named asset
     static public GameObject CreateUnit(UnitTemplate template, string modelName) {
         GameObject o = new GameObject("Unit (" + modelName + ") " + ((int)(Random.value * 100)).ToString());
+        o.tag = "unit";
 
         Unit u = o.AddComponent<Unit>();
 
