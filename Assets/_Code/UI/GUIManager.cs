@@ -9,11 +9,16 @@ public class GUIManager : MonoBehaviour {
 
     public List<GameObject> selectedObjects;
     public Rect selectionRect;
+    public IOrderResponder orderResponder;
 
     private GUIStyle styleHealthGreen;
     private GUIStyle styleHealthRed;
 
     private Texture2D selectionTexture;
+    private Texture buttonMoveTexture;
+    private Texture buttonAttackTexture;
+    private Texture buttonStopTexture;
+
 
 
 
@@ -28,6 +33,11 @@ public class GUIManager : MonoBehaviour {
 
 
         selectionTexture = MakeTex(2, 2, new Color(0f, 1f, 0f, 0.2f));
+        buttonMoveTexture = Resources.Load("Textures/move100") as Texture;
+        buttonStopTexture = Resources.Load("Textures/stop100") as Texture;
+        buttonAttackTexture = Resources.Load("Textures/attack100") as Texture;
+
+        GUI.backgroundColor = Color.white;
     }
 
 
@@ -50,6 +60,21 @@ public class GUIManager : MonoBehaviour {
             GUI.DrawTexture(rect, selectionTexture);
             DrawScreenRectBorder(rect, 1.0f, Color.green);
         }
+        if (selectedObjects.Count > 0) {
+            Rect controlZone = new Rect(Screen.width - 300, Screen.height - 300, 290, 290);
+            DrawScreenRectBorder(controlZone, 2.0f, Color.white);
+            if (GUI.Button(new Rect(controlZone.x + 10, controlZone.y + 10, 50, 50), new GUIContent(buttonAttackTexture, "Attack"))) {
+                orderResponder.DidSelectAttack();
+            }
+
+            if (GUI.Button(new Rect(controlZone.x + 70, controlZone.y + 10, 50, 50), new GUIContent(buttonMoveTexture, "Move"))) {
+                orderResponder.DidSelectMove();
+            }
+
+            if (GUI.Button(new Rect(controlZone.x + 130, controlZone.y + 10, 50, 50), new GUIContent(buttonStopTexture, "Stop"))) {
+                orderResponder.DidSelectStop();
+            }
+        }
     }
 
     private Texture2D MakeTex(int width, int height, Color col) {

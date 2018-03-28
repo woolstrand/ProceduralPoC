@@ -82,6 +82,7 @@ public partial class Unit : MonoBehaviour {
         this.order = order;
 
         if (order == UnitOrder.Idle) {
+            nextMovementTarget = transform.position;
             movementTargetObject = null;
             attackTargetUnit = null;
             attackTargetPosition = null;

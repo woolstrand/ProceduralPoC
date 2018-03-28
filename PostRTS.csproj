@@ -304,6 +304,7 @@
     <Compile Include="Assets\_Code\UI\GUIManager.cs" />
     <Compile Include="Assets\_Code\UI\ControlManager.cs" />
     <Compile Include="Assets\AreaEffectVisualizer.cs" />
+    <Compile Include="Assets\_Code\UI\IOrderResponder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
