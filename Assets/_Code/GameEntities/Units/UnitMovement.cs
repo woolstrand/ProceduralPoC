@@ -100,15 +100,17 @@ public partial class Unit {
         float maxSpeed = currentState.currentMovementSettings().maxSpeed;
         if (speed < maxSpeed) {
             speed += currentState.currentMovementSettings().maxAcceleration;
-            if (speed > maxSpeed) {
-                speed = maxSpeed;
-            }
+        }
+
+        if (speed > maxSpeed) {
+            speed = maxSpeed;
         }
     }
 
     private void DecelerateToHalfSpeed(float deltaTime) {
         float minSpeed = currentState.currentMovementSettings().maxSpeed / 2;
-        minSpeed = Math.Min(minSpeed, currentState.currentMovementSettings().minSpeed);
+        minSpeed = Math.Max(minSpeed, currentState.currentMovementSettings().minSpeed);
+        
 
         if (speed > minSpeed) {
             speed -= currentState.currentMovementSettings().maxAcceleration;

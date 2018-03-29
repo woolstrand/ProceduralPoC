@@ -12,6 +12,18 @@ public class AreaEffectVisualizer : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         gameObject.transform.localScale = new Vector3(radius * 2, 0.01f, radius * 2); //object initial diameter is 1.0 => scale = radius * 2
+
+        Material material = gameObject.GetComponent<MeshRenderer>().material;
+        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.renderQueue = 3000;
+
+        material.SetFloat("_Mode", 4f);
+
         creationTime = Time.time;
 	}
 	
@@ -21,8 +33,9 @@ public class AreaEffectVisualizer : MonoBehaviour {
 
         if (age > ttl) {
             Destroy(gameObject);
+            return;
         }
 
-        gameObject.GetComponent<MeshRenderer>().material.color = new Color(1, 0, 0, 1.0f - age / ttl);
+        gameObject.GetComponent<MeshRenderer>().material.color = new Color(1, 0, 0, 0.5f - age / ttl);
 	}
 }

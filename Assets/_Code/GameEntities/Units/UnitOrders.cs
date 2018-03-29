@@ -113,7 +113,6 @@ public partial class Unit {
 
         while (true) {
             if (autoTarget != null) yield return new WaitForSeconds(1.0f); ;
-            Debug.Log("Unit " + name + " is searching for enemies...");
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, currentState.DefaultWeapon().template.effectiveRange);
             foreach (Collider c in colliders) {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class UnitParametersTemplate : Object {
 
@@ -32,6 +33,18 @@ public class UnitParametersTemplate : Object {
 
         isSelectable = selectable;
         isControllable = controllable;
+    }
+
+    public UnitParametersTemplate Copy() {
+        UnitParametersTemplate copy = new UnitParametersTemplate();
+        copy.defaultMovementSettings = defaultMovementSettings.Copy();
+        copy.weapons = weapons.ConvertAll(weapon => weapon.Copy());
+        copy.triggeredEffects = triggeredEffects; //HMM HMM HMM...
+        copy.maximumHealth = maximumHealth;
+        copy.isSelectable = isSelectable;
+        copy.isControllable = isControllable;
+
+        return copy;
     }
 
     public void AddEffectForEvent(string eventName, EffectContainer effect) {

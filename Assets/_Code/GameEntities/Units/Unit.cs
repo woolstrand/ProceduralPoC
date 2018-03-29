@@ -27,6 +27,7 @@ public partial class Unit : MonoBehaviour {
             InitializeInternalData();
         }
 
+        StartEffects();
         UpdateMovementConstraints();
     }
 
@@ -88,8 +89,7 @@ public partial class Unit : MonoBehaviour {
 	void Update () {
 
         if (health <= 0) {
-            Debug.Log(gameObject.name + " got zero health, destroying");
-            Destroy(gameObject);
+            Die();
         }
 
         if (attackTargetUnit != null || autoTarget != null) {
@@ -106,24 +106,33 @@ public partial class Unit : MonoBehaviour {
         }
 
         PerformMovementJob();
-        PerformAttackJob(); 
-        
+        PerformAttackJob();
+        UpdateEffectsState();
+
+
+    }
+
+    //we use die to distinguish between system "on destroy" and in-game "on die"
+    private void Die() {
+        List<EffectContainer> effectsList = currentState.template.parametersTemplate.EffectsForEvent("destruction");
+        if (effectsList != null) {
+            foreach (EffectContainer ec in effectsList) {
+                ec.ApplyEffect(gameObject, transform.position);
+            }
+        }
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision) {
         List<EffectContainer> collisionList = currentState.template.parametersTemplate.EffectsForEvent("collision");
         if (collisionList != null) {
             foreach (EffectContainer ec in collisionList) {
-                ec.ApplyEffect(collision.gameObject, collision.contacts[0].point);
-            }
-        }
-    }
-
-    private void OnDestroy() {
-        List<EffectContainer> effectsList = currentState.template.parametersTemplate.EffectsForEvent("destruction");
-        if (effectsList != null) {
-            foreach (EffectContainer ec in effectsList) {
-                ec.ApplyEffect(gameObject, transform.position);
+                if (ec.target != ContainerTarget.Self) { //apply to collider
+                    ec.ApplyEffect(collision.gameObject, collision.contacts[0].point);
+                }
+                if (ec.target != ContainerTarget.Other) { //apply to self TODO: limit AOE overdrive
+                    ec.ApplyEffect(gameObject, collision.contacts[0].point);
+                }
             }
         }
     }

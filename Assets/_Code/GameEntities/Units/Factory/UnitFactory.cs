@@ -36,7 +36,8 @@ public class UnitFactory  {
         sc.size = mr.bounds.size;
 
         u.faction = faction;
-        u.template = template;
+        u.template = template.Copy();
+        //u.template = template;
         u.InitializeInternalData();
 
         return o;

@@ -60,7 +60,7 @@ public partial class Unit {
             if (targetUnit == null) targetUnit = autoTarget;
 
             if (weapon.ReadyToFire()) {
-                Debug.Log(this.gameObject.name + " ready to fire");
+
                 switch (weapon.template.projectile.projectileType) {
                     case ProjectileType.Direct:
                         if (targetUnit != null) {
@@ -72,7 +72,6 @@ public partial class Unit {
                     case ProjectileType.Linear:
                         if (Math.Pow(weapon.template.projectile.effectiveLength, 2) >
                             Vector3.SqrMagnitude(targetPosition - transform.position)) {
-                            Debug.Log(this.gameObject.name + " in range, firing");
 
                             FireLinearProjectileAtTarget(weapon, targetPosition);
                             weapon.Fire(); //this object is a data object, so it doesn't fire by itself, it only moves inner state from "ready" to "reloading"
@@ -121,7 +120,6 @@ public partial class Unit {
                 c.ApplyEffect(hitObject, ((RaycastHit)nearestHit).point);
             }
             hitReceiver = ((RaycastHit)nearestHit).point;
-            Debug.Log(this.gameObject.name + " shoot and hit " + hitObject.name + ", applying an effect");
         }
 
         //since the projectile could hit another target on it's way, let's draw ray to the actual hit receiver
@@ -145,7 +143,7 @@ public partial class Unit {
         projectileUnit.transform.position = transform.position + weapon.template.barrelOrigin;
         projectileUnit.transform.rotation = Quaternion.LookRotation(target - projectileUnit.transform.position);
         var unitDesc = projectileUnit.GetComponent<Unit>();
-        unitDesc.template = weapon.template.projectile.projectileUnitTemplate;
+        unitDesc.template = weapon.template.projectile.projectileUnitTemplate.Copy();
         unitDesc.InitializeInternalData();
 
         unitDesc.SetMovementTarget(target);

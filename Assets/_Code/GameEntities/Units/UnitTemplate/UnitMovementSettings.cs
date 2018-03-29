@@ -27,5 +27,10 @@ public class UnitMovementSettings : Object {
         maxAngularSpeed = 5.0f;
     }
 
+    public UnitMovementSettings Copy() {
+        UnitMovementSettings copy = new UnitMovementSettings(maxSpeed, maxAngularSpeed, maxAcceleration, minSpeed);
+        copy.isLockedVertically = isLockedVertically;
+        return copy;
+    }
     
 }

@@ -64,14 +64,18 @@ public class UnitTemplateFactory  {
     public static UnitTemplate DefaultProjectileUnitTemplate() {
         UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 15.0f, maxAngularSpeed: 1.0f, maxAcceleration: 2.5f, minSpeed: 15.0f, lockedVertically: false);
 
-        Effect weaponEffect = EffectFactory.BasicDamageEffect(80);
+        //        Effect weaponEffect = EffectFactory.BasicDamageEffect(80);
+        Effect weaponEffect = EffectFactory.BasicSlowdownEffect(44);
         EffectContainer container = EffectFactory.AOEHitContainer(weaponEffect, 5.0f);
 
+        Effect selfhitEffect = EffectFactory.BasicDamageEffect(10);
+        EffectContainer selfhit = EffectFactory.DirectHitContainer(selfhitEffect);
+        selfhit.target = ContainerTarget.Self;
         
         UnitParametersTemplate parameters = new UnitParametersTemplate(movement, maximumHealth: 10.0f);
         parameters.isControllable = false;
         parameters.isSelectable = false;
-        parameters.AddEffectForEvent("collision", container);
+        parameters.AddEffectForEvent("collision", selfhit);
         parameters.AddEffectForEvent("destruction", container);
 
         UnitStateTemplate state = new UnitStateTemplate(parameters);

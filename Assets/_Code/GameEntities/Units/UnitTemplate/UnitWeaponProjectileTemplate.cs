@@ -17,6 +17,10 @@ public class UnitWeaponProjectileTemplate : Object {
 
     public List<EffectContainer> effects; //effects applied to collided object or directly to area/point
 
+    private UnitWeaponProjectileTemplate() {
+
+    }
+
     public UnitWeaponProjectileTemplate(UnitTemplate projectileUnitTemplate) {
         projectileType = ProjectileType.SubUnit;
         this.projectileUnitTemplate = projectileUnitTemplate;
@@ -31,5 +35,16 @@ public class UnitWeaponProjectileTemplate : Object {
     public UnitWeaponProjectileTemplate(List<EffectContainer> effects) {
         projectileType = ProjectileType.Direct;
         this.effects = new List<EffectContainer>(effects);
+    }
+
+    public UnitWeaponProjectileTemplate Copy() {
+        UnitWeaponProjectileTemplate copy = new UnitWeaponProjectileTemplate();
+
+        copy.projectileType = projectileType;
+        copy.effectiveLength = effectiveLength;
+        if (effects != null) copy.effects = new List<EffectContainer>(effects); //Hmmmm....
+        if (projectileUnitTemplate != null) copy.projectileUnitTemplate = projectileUnitTemplate.Copy();
+
+        return copy;
     }
 }

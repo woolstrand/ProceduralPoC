@@ -6,14 +6,17 @@ using UnityEngine;
 
 class EffectFactory {
     
-    public static EffectType physicalDamageType() {
-        return new EffectType("physical", 1);
-    }
 
     //pure effects
 
     public static Effect BasicDamageEffect(float amount) {
-        Effect e = new Effect("health", physicalDamageType(), -amount);
+        Effect e = Effect.PermanentEffect("health", "physical", -amount);
+        return e;
+    }
+
+    public static Effect BasicSlowdownEffect(float amount) {
+        Effect e = Effect.TemporaryEffect("currentState.template.parametersTemplate.defaultMovementSettings.maxSpeed", "group_id_here", 10.0f, 0, 0.5f);
+        e.stackability = StackabilityType.Power;
         return e;
     }
 

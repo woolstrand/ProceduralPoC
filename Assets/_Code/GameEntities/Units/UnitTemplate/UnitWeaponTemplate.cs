@@ -22,6 +22,10 @@ public class UnitWeaponTemplate {
     public UnitWeaponProjectileTemplate projectile;
     public Vector3 barrelOrigin; //point relative to unit's center from where child unit or casted ray is spawned. defaults to object's geometrical center.
 
+    private UnitWeaponTemplate() {
+
+    }
+
     public UnitWeaponTemplate(UnitWeaponProjectileTemplate projectile,
         float reloadTime = 1.0f, float targetingTime = 0.5f,
         float minHeading = -0.1f, float maxHeading = 0.1f,
@@ -45,6 +49,24 @@ public class UnitWeaponTemplate {
             this.effectiveRange = effectiveRange;
         }
 
+    }
+
+    public UnitWeaponTemplate Copy() {
+        UnitWeaponTemplate copy = new UnitWeaponTemplate();
+        copy.projectile = projectile.Copy();
+
+        copy.reloadTime = reloadTime;
+        copy.targetingTime = targetingTime;
+        copy.minHeading = minHeading;
+        copy.maxHeading = maxHeading;
+        copy.minPitch = minPitch;
+        copy.maxPitch = maxPitch;
+        copy.angularSpeed = angularSpeed;
+
+        copy.effectiveRange = effectiveRange;
+        copy.barrelOrigin = barrelOrigin;
+
+        return copy;
     }
 
 
