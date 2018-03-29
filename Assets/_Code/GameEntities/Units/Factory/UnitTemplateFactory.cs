@@ -40,6 +40,27 @@ public class UnitTemplateFactory  {
         return template;
     }
 
+    public static UnitTemplate pigeonTemplate() {
+        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 6.0f, maxAngularSpeed: 20.0f, maxAcceleration: 4.0f);
+
+
+
+        Effect hit = EffectFactory.BasicDamageEffect(3.0f);
+        EffectContainer hitContainer = EffectFactory.DirectHitContainer(hit);
+
+        UnitWeaponProjectileTemplate projectile = new UnitWeaponProjectileTemplate(new List<EffectContainer> { hitContainer });
+
+        UnitWeaponTemplate weaponTemplate = new UnitWeaponTemplate(projectile, reloadTime: 0.5f, targetingTime: 0.0f,
+            minHeading: -1.5f, maxHeading: 1.5f, minPitch: -1, maxPitch: 1, angularSpeed: 1000, effectiveRange: 2.0f);
+        weaponTemplate.barrelOrigin = new Vector3(0, 0, 0);
+
+        UnitParametersTemplate parameters = new UnitParametersTemplate(movement, maximumHealth: 450.0f, weapons: new List<UnitWeaponTemplate> { weaponTemplate });
+        UnitStateTemplate state = new UnitStateTemplate(parameters);
+        UnitTemplate template = new UnitTemplate(state);
+
+        return template;
+    }
+
     public static UnitTemplate DefaultProjectileUnitTemplate() {
         UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 15.0f, maxAngularSpeed: 1.0f, maxAcceleration: 2.5f, minSpeed: 15.0f, lockedVertically: false);
 

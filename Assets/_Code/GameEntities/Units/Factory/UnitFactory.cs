@@ -6,7 +6,7 @@ using UnityEngine;
 public class UnitFactory  {
 
     //created unit with chosen template and with mesh based on named asset
-    static public GameObject CreateUnit(UnitTemplate template, string modelName) {
+    static public GameObject CreateUnit(UnitTemplate template, string modelName, int faction) {
         GameObject o = new GameObject("Unit (" + modelName + ") " + ((int)(Random.value * 100)).ToString());
         o.tag = "unit";
 
@@ -16,11 +16,12 @@ public class UnitFactory  {
         Material[] materials = Resources.LoadAll<Material>("Models/" + modelName);
 
         Rigidbody rb = o.AddComponent<Rigidbody>();
-        MeshCollider mc = o.AddComponent<MeshCollider>();
+        //MeshCollider mc = o.AddComponent<MeshCollider>();
+        BoxCollider sc = o.AddComponent<BoxCollider>();
         MeshFilter mf = o.AddComponent<MeshFilter>();
         MeshRenderer mr = o.AddComponent<MeshRenderer>();
 
-        mc.convex = true;
+        //mc.convex = true;
 
         rb.useGravity = false;
         rb.mass = 10;
@@ -31,8 +32,10 @@ public class UnitFactory  {
         mr.materials = materials;
 
 
-        mc.sharedMesh = mf.mesh;
+        //mc.sharedMesh = mf.mesh;
+        sc.size = mr.bounds.size;
 
+        u.faction = faction;
         u.template = template;
         u.InitializeInternalData();
 

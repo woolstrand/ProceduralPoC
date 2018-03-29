@@ -8,13 +8,15 @@ public partial class Unit {
     GameObject attackTargetUnit;
 
     private void UpdateWeaponTargetAngles() { //updates weapon's desired heading and pitch to point at target (respecting object orientation)
-        if (attackTargetPosition == null && attackTargetUnit == null) return;
+        if (attackTargetPosition == null && attackTargetUnit == null && autoTarget == null) return;
 
         Vector3 targetPosition;
         if (attackTargetPosition != null) {
             targetPosition = (Vector3)attackTargetPosition;
-        } else {
+        } else if (attackTargetUnit != null) {
             targetPosition = attackTargetUnit.transform.position;
+        } else {
+            targetPosition = autoTarget.transform.position;
         }
 
         Vector3 objectToTarget = (targetPosition - transform.position).normalized;
@@ -33,7 +35,7 @@ public partial class Unit {
     }
 
     private void PerformAttackJob() {
-        if (attackTargetUnit == null && attackTargetPosition == null) {
+        if (attackTargetUnit == null && attackTargetPosition == null && autoTarget == null) {
             return;
         }
 
@@ -45,19 +47,24 @@ public partial class Unit {
             Vector3 targetPosition;
             if (attackTargetUnit != null) {
                 targetPosition = attackTargetUnit.GetComponent<Renderer>().bounds.center;
-            } else {
+            } else if (attackTargetPosition != null) {
                 targetPosition = (Vector3)attackTargetPosition;
+            } else {
+                targetPosition = autoTarget.GetComponent<Renderer>().bounds.center;
             }
 
             //Aim before shooting. Aiming speed should be enough to follow a moving target.
             weapon.PerformTargeting(Time.deltaTime);
 
+            GameObject targetUnit = attackTargetUnit;
+            if (targetUnit == null) targetUnit = autoTarget;
+
             if (weapon.ReadyToFire()) {
                 Debug.Log(this.gameObject.name + " ready to fire");
                 switch (weapon.template.projectile.projectileType) {
                     case ProjectileType.Direct:
-                        if (attackTargetUnit != null) {
-                            FireDirectProjectileAtTarget(weapon.template.projectile, attackTargetUnit);
+                        if (targetUnit != null) {
+                            FireDirectProjectileAtTarget(weapon.template.projectile, targetUnit);
 
                             weapon.Fire(); //this object is a data object, so it doesn't fire by itself, it only moves inner state from "ready" to "reloading"
                         }
@@ -73,8 +80,8 @@ public partial class Unit {
                         }
                         break;
                     case ProjectileType.SubUnit:
-                        if (attackTargetUnit != null) {
-                            FireSubUnitProjectileAtTarget(weapon, attackTargetUnit);
+                        if (targetUnit != null) {
+                            FireSubUnitProjectileAtTarget(weapon, targetUnit);
                         } else {
                             FireSubUnitProjectileAtTarget(weapon, (Vector3)attackTargetPosition);
                         }
@@ -134,7 +141,7 @@ public partial class Unit {
 
 
     private GameObject FireSubUnitProjectileAtTarget(WeaponState weapon, Vector3 target) {
-        var projectileUnit = UnitFactory.CreateUnit(weapon.template.projectile.projectileUnitTemplate, "ammo");
+        var projectileUnit = UnitFactory.CreateUnit(weapon.template.projectile.projectileUnitTemplate, "ammo", this.faction);
         projectileUnit.transform.position = transform.position + weapon.template.barrelOrigin;
         projectileUnit.transform.rotation = Quaternion.LookRotation(target - projectileUnit.transform.position);
         var unitDesc = projectileUnit.GetComponent<Unit>();

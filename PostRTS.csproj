@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -301,10 +299,10 @@
     <Compile Include="Assets\_Code\GameEntities\Units\UnitTemplate\UnitWeaponProjectileTemplate.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitTemplate\UnitWeaponTemplate.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\UnitWeaponry.cs" />
-    <Compile Include="Assets\_Code\UI\GUIManager.cs" />
     <Compile Include="Assets\_Code\UI\ControlManager.cs" />
-    <Compile Include="Assets\AreaEffectVisualizer.cs" />
+    <Compile Include="Assets\_Code\UI\GUIManager.cs" />
     <Compile Include="Assets\_Code\UI\IOrderResponder.cs" />
+    <Compile Include="Assets\AreaEffectVisualizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

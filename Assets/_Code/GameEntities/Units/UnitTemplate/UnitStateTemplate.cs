@@ -5,7 +5,7 @@ using System;
 public class UnitStateTemplate : Object {
 
     public UnitParametersTemplate parametersTemplate { get; private set; }
-    private List<UnitStateTemplate> accessibleStates;
+    public List<UnitStateTemplate> accessibleStates { get; private set; }
 
     public UnitStateTemplate() {
         parametersTemplate = new UnitParametersTemplate();

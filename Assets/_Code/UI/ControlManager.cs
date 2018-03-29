@@ -7,13 +7,13 @@ public class ControlManager : MonoBehaviour, IOrderResponder {
     public GameObject ground;
     public GameObject selectedUnit;
     public GUIManager guiManager;
-    public Camera camera;
 
     public float scrollSpeed = 6.0f;
     public float zoomSpeed = 100.0f;
 
     private bool forcedAttackMode;
     private int unitId = 0;
+    private int factionId = 1;
 
     private List<GameObject> selectedUnits;
 
@@ -38,7 +38,12 @@ public class ControlManager : MonoBehaviour, IOrderResponder {
         }
 
         if (Input.GetButtonDown("CycleUnits")) {
-            unitId = (unitId + 1) % 2;
+            unitId = (unitId + 1) % 3;
+        }
+
+        if (Input.GetButtonDown("CycleFactions")) {
+            factionId += 1;
+            if (factionId == 2) factionId = -1;
         }
 
 
@@ -73,9 +78,11 @@ public class ControlManager : MonoBehaviour, IOrderResponder {
                 GameObject o = null;
 
                 if (unitId == 0) {
-                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate(), "unit");
+                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate(), "unit", factionId);
                 } else if (unitId == 1) {
-                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate2(), "unit2");
+                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate2(), "unit2", factionId);
+                } else if (unitId == 2) {
+                    o = UnitFactory.CreateUnit(UnitTemplateFactory.pigeonTemplate(), "pigeon2", factionId);
                 }
 
                 o.transform.position = new Vector3(hitInfo.point.x, 0.01f, hitInfo.point.z);
@@ -217,7 +224,7 @@ public class ControlManager : MonoBehaviour, IOrderResponder {
         float scroll = -Input.GetAxis("Mouse ScrollWheel");
 
         if (horizontal != 0 || vertical != 0 || scroll != 0) {
-            camera.transform.Translate(horizontal * scrollSpeed * Time.deltaTime, scroll * zoomSpeed * Time.deltaTime, vertical * scrollSpeed * Time.deltaTime, Space.World);
+            Camera.main.transform.Translate(horizontal * scrollSpeed * Time.deltaTime, scroll * zoomSpeed * Time.deltaTime, vertical * scrollSpeed * Time.deltaTime, Space.World);
         }
     }
 }

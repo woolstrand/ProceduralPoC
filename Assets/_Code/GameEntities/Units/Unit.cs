@@ -13,7 +13,7 @@ public partial class Unit : MonoBehaviour {
     public UnitState currentState { get; private set; }
     public float health {get; private set; }
 
-    public int faction; //for now faction 0 is player, faction -1 is neutral, faction 1 is enemy
+    public int faction; //for now faction 0 is player, faction -1 is neutral, faction 1 is enemy. it's pretty fun to have faction attached to a certain state, but, well, not today.
 
 
     private List<Action> gizmoActions;
@@ -58,7 +58,7 @@ public partial class Unit : MonoBehaviour {
     }
 
     public void SetAttackTarget(Vector3 target) {
-        if (attackTargetPosition != null && target != null &&
+        if (attackTargetPosition != null && 
             Vector3.Distance((Vector3)attackTargetPosition, target) > 0.5) {
             currentState.DefaultWeapon().StartTargeting();
         }
@@ -79,26 +79,7 @@ public partial class Unit : MonoBehaviour {
     }
 
     public void SetOrder(UnitOrder order) {
-        this.order = order;
-
-        if (order == UnitOrder.Idle) {
-            nextMovementTarget = transform.position;
-            movementTargetObject = null;
-            attackTargetUnit = null;
-            attackTargetPosition = null;
-            orientationTarget = null;
-        }
-
-        if (order == UnitOrder.Attack) {
-            movementTargetObject = null;
-        }
-
-        if (order == UnitOrder.Move) {
-            attackTargetPosition = null;
-            attackTargetUnit = null;
-        }
-
-        UpdateTargetsWithinCurrentOrder();
+        DoSetOrder(order);
     }
 
 	
@@ -111,12 +92,17 @@ public partial class Unit : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        if (attackTargetUnit != null) {
+        if (attackTargetUnit != null || autoTarget != null) {
             UpdateWeaponTargetAngles(); //update target angles if aiming at possibly moving target or if the unit moves itself
         }
 
         if (order != UnitOrder.Idle) {
             UpdateTargetsWithinCurrentOrder();
+        } else {
+            if (autoTarget != null) {
+                Vector3 direction = autoTarget.transform.position - transform.position;
+                AdjustOrientationForAttack(direction);
+            }
         }
 
         PerformMovementJob();
