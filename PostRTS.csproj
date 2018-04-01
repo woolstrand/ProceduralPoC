@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -286,6 +284,8 @@
   <ItemGroup>
     <Compile Include="Assets\_Code\GameEntities\Effects\Effect.cs" />
     <Compile Include="Assets\_Code\GameEntities\Effects\EffectFactory.cs" />
+    <Compile Include="Assets\_Code\GameEntities\Units\Factory\MeshGenerator\GameObjectsProvider.cs" />
+    <Compile Include="Assets\_Code\GameEntities\Units\Factory\MeshGenerator\UnitMeshGenerator.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\Factory\UnitFactory.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\Factory\UnitTemplateFactory.cs" />
     <Compile Include="Assets\_Code\GameEntities\Units\Unit.cs" />
@@ -305,6 +305,101 @@
     <Compile Include="Assets\_Code\UI\GUIManager.cs" />
     <Compile Include="Assets\_Code\UI\IOrderResponder.cs" />
     <Compile Include="Assets\AreaEffectVisualizer.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Breakout\Breakout.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Breakout\BreakoutConfigurator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Breakout\Brick.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\BuildingGenerator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\BuildingGeneratorBase.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\BuildingGeneratorConfigurator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\FacadeLayout.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\HorizontalLayout.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\IFacadeLayout.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\IFacadePanel.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\ProceduralFacadePanels.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\RoofGenerator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Buildings\VerticalLayout.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\CellularAutomata\CellularAutomatonConfigurator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Chairs\Armrests.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Chairs\Backs.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Chairs\ChairGenerator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Chairs\ChairGeneratorConfigurator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Chairs\Stretchers.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Characters\Character.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Characters\CharacterGenerator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Characters\CharacterGeneratorConfigurator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Characters\NameGenerator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Common\ButtonControl.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Common\CameraRotator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Common\ConfiguratorBase.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Common\SkyBoxGenerator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Common\SliderControl.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Common\TextControl.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Common\ToggleControl.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Drawing\Drawer.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\LowPolyTerrain\LowPolyTerrainGenerator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\LowPolyTerrain\LowPolyTerrainGeneratorConfigurator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Mazes\Maze.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Mazes\MazeGenerator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Mazes\MazeGeneratorConfigurator.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Cylinder.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Dodecahedron.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\FlatSphere.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\FlatSpheroid.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\FlatTeardrop.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Hexahedron.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Icosahedron.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Octahedron.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Plane.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Prism.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Pyramid.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Sphere.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Spheroid.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Teardrop.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\Primitives\Tetrahedron.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Examples\SDF\ImageSelector.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\ArrayE.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\CellularAutomaton.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\ColorE.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\ColorHSV.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\CompoundMeshDraft.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\DebugE.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\Directions.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\Draw.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\DrawRaster.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\Geometry.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\GizmosE.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\GLE.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\MeshDraft.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\MeshDraftPrimitives.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\MeshE.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\PTUtils.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\RandomE.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\TextureE.cs" />
+    <Compile Include="Assets\ProceduralToolkit\Scripts\VectorE.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\ProceduralToolkit\Examples\Characters\names.txt" />
+    <None Include="Assets\ProceduralToolkit\Examples\SDF\Animation.shader" />
+    <None Include="Assets\ProceduralToolkit\Examples\SDF\DistanceOperations.shader" />
+    <None Include="Assets\ProceduralToolkit\Examples\SDF\Easing.shader" />
+    <None Include="Assets\ProceduralToolkit\Examples\SDF\Shapes.shader" />
+    <None Include="Assets\ProceduralToolkit\Examples\SDF\StarPolygon.shader" />
+    <None Include="Assets\ProceduralToolkit\Examples\SDF\Transitions.shader" />
+    <None Include="Assets\ProceduralToolkit\LICENSE.txt" />
+    <None Include="Assets\ProceduralToolkit\Shaders\Common.cginc" />
+    <None Include="Assets\ProceduralToolkit\Shaders\Debug\Debug Bitangents.shader" />
+    <None Include="Assets\ProceduralToolkit\Shaders\Debug\Debug Normals.shader" />
+    <None Include="Assets\ProceduralToolkit\Shaders\Debug\Debug Tangents.shader" />
+    <None Include="Assets\ProceduralToolkit\Shaders\Debug\Debug UV1.shader" />
+    <None Include="Assets\ProceduralToolkit\Shaders\Debug\Debug UV2.shader" />
+    <None Include="Assets\ProceduralToolkit\Shaders\Easing.cginc" />
+    <None Include="Assets\ProceduralToolkit\Shaders\Gradient Skybox.shader" />
+    <None Include="Assets\ProceduralToolkit\Shaders\SDF.cginc" />
+    <None Include="Assets\ProceduralToolkit\Shaders\Transitions.cginc" />
+    <None Include="Assets\ProceduralToolkit\Shaders\VertexColor\Diffuse Vertex Color.shader" />
+    <None Include="Assets\ProceduralToolkit\Shaders\VertexColor\Specular Vertex Color.shader" />
+    <None Include="Assets\ProceduralToolkit\Shaders\VertexColor\Standard Vertex Color.shader" />
+    <None Include="Assets\ProceduralToolkit\Shaders\VertexColor\Unlit Vertex Color.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -139,7 +139,7 @@ public partial class Unit {
 
 
     private GameObject FireSubUnitProjectileAtTarget(WeaponState weapon, Vector3 target) {
-        var projectileUnit = UnitFactory.CreateUnit(weapon.template.projectile.projectileUnitTemplate, "ammo", this.faction);
+        var projectileUnit = UnitFactory.CreateUnit(weapon.template.projectile.projectileUnitTemplate, "ammo", this.faction, MeshClass.Projectile);
         projectileUnit.transform.position = transform.position + weapon.template.barrelOrigin;
         projectileUnit.transform.rotation = Quaternion.LookRotation(target - projectileUnit.transform.position);
         var unitDesc = projectileUnit.GetComponent<Unit>();

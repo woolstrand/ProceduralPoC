@@ -38,7 +38,7 @@ public class ControlManager : MonoBehaviour, IOrderResponder {
         }
 
         if (Input.GetButtonDown("CycleUnits")) {
-            unitId = (unitId + 1) % 3;
+            unitId = (unitId + 1) % 6;
         }
 
         if (Input.GetButtonDown("CycleFactions")) {
@@ -77,12 +77,12 @@ public class ControlManager : MonoBehaviour, IOrderResponder {
 
                 GameObject o = null;
 
-                if (unitId == 0) {
-                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate(), "unit", factionId);
-                } else if (unitId == 1) {
-                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate2(), "unit2", factionId);
-                } else if (unitId == 2) {
-                    o = UnitFactory.CreateUnit(UnitTemplateFactory.pigeonTemplate(), "pigeon2", factionId);
+                if (unitId <= 3) {
+                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate(), "unit1-"+unitId, factionId);
+                } else if (unitId == 4) {
+                    o = UnitFactory.CreateUnit(UnitTemplateFactory.defaultUnitTemplate2(), "unit2-1", factionId);
+                } else if (unitId == 5) {
+                    o = UnitFactory.CreateUnit(UnitTemplateFactory.pigeonTemplate(), "pigeon2", factionId, MeshClass.Goliath);
                 }
 
                 o.transform.position = new Vector3(hitInfo.point.x, 0.01f, hitInfo.point.z);

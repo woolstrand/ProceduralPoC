@@ -29,6 +29,7 @@ public partial class Unit : MonoBehaviour {
 
         StartEffects();
         UpdateMovementConstraints();
+        SetOrder(UnitOrder.Idle);
     }
 
     public void InitializeInternalData() {

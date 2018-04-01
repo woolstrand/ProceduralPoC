@@ -25,7 +25,7 @@ public class UnitTemplateFactory  {
     public static UnitTemplate defaultUnitTemplate2() {
         UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 10.0f, maxAngularSpeed: 100.0f, maxAcceleration: 1.0f);
 
-        UnitTemplate projectileUnitTemplate = DefaultProjectileUnitTemplate();
+        UnitTemplate projectileUnitTemplate = DefaultProjectileUnitTemplate2();
 
 
         UnitWeaponProjectileTemplate projectile = new UnitWeaponProjectileTemplate(projectileUnitTemplate);
@@ -41,20 +41,20 @@ public class UnitTemplateFactory  {
     }
 
     public static UnitTemplate pigeonTemplate() {
-        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 6.0f, maxAngularSpeed: 20.0f, maxAcceleration: 4.0f);
+        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 2.0f, maxAngularSpeed: 0.5f, maxAcceleration: 0.1f);
 
 
 
-        Effect hit = EffectFactory.BasicDamageEffect(3.0f);
+        Effect hit = EffectFactory.BasicDamageEffect(200.0f);
         EffectContainer hitContainer = EffectFactory.DirectHitContainer(hit);
 
-        UnitWeaponProjectileTemplate projectile = new UnitWeaponProjectileTemplate(new List<EffectContainer> { hitContainer });
+        UnitWeaponProjectileTemplate projectile = new UnitWeaponProjectileTemplate(new List<EffectContainer> { hitContainer }, 30);
 
-        UnitWeaponTemplate weaponTemplate = new UnitWeaponTemplate(projectile, reloadTime: 0.5f, targetingTime: 0.0f,
-            minHeading: -1.5f, maxHeading: 1.5f, minPitch: -1, maxPitch: 1, angularSpeed: 1000, effectiveRange: 2.0f);
+        UnitWeaponTemplate weaponTemplate = new UnitWeaponTemplate(projectile, reloadTime: 10.0f, targetingTime: 0.0f,
+            minHeading: -2.5f, maxHeading: 2.5f, minPitch: -2, maxPitch: 2, angularSpeed: 1000, effectiveRange: 30.0f);
         weaponTemplate.barrelOrigin = new Vector3(0, 0, 0);
 
-        UnitParametersTemplate parameters = new UnitParametersTemplate(movement, maximumHealth: 450.0f, weapons: new List<UnitWeaponTemplate> { weaponTemplate });
+        UnitParametersTemplate parameters = new UnitParametersTemplate(movement, maximumHealth: 10000.0f, weapons: new List<UnitWeaponTemplate> { weaponTemplate });
         UnitStateTemplate state = new UnitStateTemplate(parameters);
         UnitTemplate template = new UnitTemplate(state);
 
@@ -62,7 +62,7 @@ public class UnitTemplateFactory  {
     }
 
     public static UnitTemplate DefaultProjectileUnitTemplate() {
-        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 15.0f, maxAngularSpeed: 1.0f, maxAcceleration: 2.5f, minSpeed: 15.0f, lockedVertically: false);
+        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 3.0f, maxAngularSpeed: 1.0f, maxAcceleration: 2.5f, minSpeed: 15.0f, lockedVertically: false);
 
         //        Effect weaponEffect = EffectFactory.BasicDamageEffect(80);
         Effect weaponEffect = EffectFactory.BasicSlowdownEffect(44);
@@ -71,11 +71,29 @@ public class UnitTemplateFactory  {
         Effect selfhitEffect = EffectFactory.BasicDamageEffect(10);
         EffectContainer selfhit = EffectFactory.DirectHitContainer(selfhitEffect);
         selfhit.target = ContainerTarget.Self;
-        
+
         UnitParametersTemplate parameters = new UnitParametersTemplate(movement, maximumHealth: 10.0f);
         parameters.isControllable = false;
         parameters.isSelectable = false;
         parameters.AddEffectForEvent("collision", selfhit);
+        parameters.AddEffectForEvent("destruction", container);
+
+        UnitStateTemplate state = new UnitStateTemplate(parameters);
+        UnitTemplate template = new UnitTemplate(state);
+
+        return template;
+    }
+
+    public static UnitTemplate DefaultProjectileUnitTemplate2() {
+        UnitMovementSettings movement = new UnitMovementSettings(maxSpeed: 4.0f, maxAngularSpeed: 1.0f, maxAcceleration: 2.5f, minSpeed: 15.0f, lockedVertically: false);
+
+        Effect weaponEffect = EffectFactory.BasicDamageEffect(80);
+        EffectContainer container = EffectFactory.AOEHitContainer(weaponEffect, 1.5f);
+
+        UnitParametersTemplate parameters = new UnitParametersTemplate(movement, maximumHealth: 10.0f);
+        parameters.isControllable = false;
+        parameters.isSelectable = false;
+        parameters.AddEffectForEvent("collision", container);
         parameters.AddEffectForEvent("destruction", container);
 
         UnitStateTemplate state = new UnitStateTemplate(parameters);
